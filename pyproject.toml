@@ -1,0 +1,27 @@
+[project]
+name = "labkit"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "cvxpy>=1.7.3",
+    "matplotlib>=3.10.6",
+    "pyvisa>=1.15.0",
+    "qcodes>=0.53.0",
+    "qutip>=5.2.1",
+    "sympy>=1.14.0",
+    "waveforms>=2.2.2",
+]
+
+[project.optional-dependencies]
+
+
+[build-system]
+requires = ["uv_build>=0.8.12,<0.9.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pyvisa-py>=0.8.1",
+]
