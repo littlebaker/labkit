@@ -41,44 +41,50 @@ def qubit_state_tomography(
     return rho.value
 
 
-
-def process_tomography(rho_before: Sequence[np.ndarray], rho_after: Sequence[np.ndarray]):
+def process_tomography(
+    rho_before: Sequence[np.ndarray],
+    rho_after: Sequence[np.ndarray],
+    expand_basis: Sequence[np.ndarray],
+):
     rho_before = np.asarray(rho_before)
     rho_after = np.asarray(rho_after)
+    expand_basis = np.asarray(expand_basis)
 
     assert rho_before.ndim == 3
 
     assert rho_before.shape == rho_after.shape
 
-    assert rho_before.shape[0] == rho_before.shape[1]
+    assert rho_before.shape[1] == rho_before.shape[2]
 
 
     n_basis = rho_before.shape[0]
     N = rho_before.shape[1]
 
-    U = cpy.Variable((N**2, N**2), complex=True)
+    assert len(expand_basis) == N ** 2
 
-    def _vec(x):
-        return x.reshape((-1, 1), 'F')
+    _tensor_bases = np.einsum('mab, lbc, ncd -> lmnad', expand_basis, rho_before, expand_basis.conj().swapaxes(-1, -2))
+    _tensor_bases = np.reshape(_tensor_bases, (n_basis, N**2, N**2, -1), order='F').transpose((0, 3, 1, 2))
+    A = np.reshape(_tensor_bases, (n_basis * N**2, -1), order='F')
 
-    obj = cpy.Minimize(sum([cpy.real(cpy.sum_squares(U@_vec(x) - y)) for x, y in zip(rho_before, rho_after)]))
+    Y = np.reshape(rho_after, (-1, ), order='F')
 
-    prob = cpy.Problem(obj, None)
+
+    chi = cpy.Variable((N**2, N**2), hermitian=True)
+
+
+    obj = cpy.Minimize(cpy.sum_squares(A @ cpy.vec(chi, order='F') - Y))
+    constrains = [chi >> 0, cpy.trace(chi)==1]
+
+    prob = cpy.Problem(obj, constrains)
 
     res = prob.solve()
     print(res)
 
-    return U.value
-
-
-    
-
-
-
+    return chi.value
 
 
 if __name__ == "__main__":
-    from qutip import sigmaz, sigmax, sigmay, Bloch, Qobj
+    from qutip import sigmaz, sigmax, sigmay, Bloch, Qobj, qeye
 
     sx, sy, sz = (
         sigmax().full(),
@@ -86,19 +92,24 @@ if __name__ == "__main__":
         sigmaz().full(),
     )
     bases = [sx, sy, sz]
-    values = [0, 0., -2]
+    values = [0, 0.0, -2]
     # values = [0.64349228, 0.61755356, 1.00000000e+00]
 
-    res = (qubit_state_tomography(bases, values))
-    rho = Qobj(res, dims=[2, 2])
+    # res = qubit_state_tomography(bases, values)
+    # rho = Qobj(res, dims=[2, 2])
 
-    b = Bloch()
-    b.add_states(rho)
-    display(rho) # type: ignore
+    # b = Bloch()
+    # b.add_states(rho)
+    # display(rho)  # type: ignore
 
+    # b.show()
 
-
-    b.show()
-
-
+    I = qeye(2).full()
+    def _gen_rho():
+        _rho = np.random.normal(size=(2, 2))+  1j*np.random.normal(size=(2, 2))
+        return _rho / np.trace(_rho)
     
+    rho_list = [_gen_rho() for _ in range(3)]
+
+    Chi = process_tomography(rho_list, rho_list, [I, sx, sy, sz])
+    print(Chi)
