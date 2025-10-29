@@ -73,7 +73,7 @@ def process_tomography(
 
 
     obj = cpy.Minimize(cpy.sum_squares(A @ cpy.vec(chi, order='F') - Y))
-    constrains = [chi >> 0, cpy.trace(chi)==1]
+    constrains = [chi >> 0, ]
 
     prob = cpy.Problem(obj, constrains)
 
