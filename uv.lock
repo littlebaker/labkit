@@ -695,6 +695,7 @@ dependencies = [
     { name = "pyvisa" },
     { name = "qcodes" },
     { name = "qutip" },
+    { name = "qutip-qip" },
     { name = "sympy" },
     { name = "waveforms" },
 ]
@@ -711,6 +712,7 @@ requires-dist = [
     { name = "pyvisa", specifier = ">=1.15.0" },
     { name = "qcodes", specifier = ">=0.53.0" },
     { name = "qutip", specifier = ">=5.2.1" },
+    { name = "qutip-qip", specifier = ">=0.4.1" },
     { name = "sympy", specifier = ">=1.14.0" },
     { name = "waveforms", specifier = ">=2.2.2" },
 ]
@@ -1389,6 +1391,21 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/c8/f4/c4e7218314e2b407d8104979432527998045e6edd9defeae4b2279714166/qutip-5.2.1-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:8549a1e14756e376b74eaa8be3ec68596667d25f17ebaad564c592bb36acc47c", size = 10637481, upload-time = "2025-08-27T13:53:13.445Z" },
     { url = "https://files.pythonhosted.org/packages/03/df/4d440518a192372f743bf14572bf0af84b257d2be8f60d7ac6235ee8f121/qutip-5.2.1-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:e920862b26f104f85a2e493d5cd2210b40aa97e4a6edfb763027ef830ea53ffa", size = 31526090, upload-time = "2025-08-27T13:53:15.859Z" },
     { url = "https://files.pythonhosted.org/packages/39/78/2ca50711cf5b6102311f8ba4076521abbbf219543f8d5f97da62df1c19b7/qutip-5.2.1-cp313-cp313-win_amd64.whl", hash = "sha256:a108fb89e077bf44368b27eede3914591ec71840bf6619debba437a59802c4fe", size = 10481599, upload-time = "2025-08-27T13:53:18.406Z" },
+]
+
+[[package]]
+name = "qutip-qip"
+version = "0.4.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "numpy" },
+    { name = "packaging" },
+    { name = "qutip" },
+    { name = "scipy" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/b3/74/19bb890570b0ad854f099858f5e5a64cc2268c3ea14ccd52309d10508925/qutip_qip-0.4.1.tar.gz", hash = "sha256:110f15602086f22f90767b5dd22de566f5429b037865409df09c61ac1f664191", size = 161744, upload-time = "2025-04-07T17:26:02.555Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/99/85/50622645103786162a196e054f7875ce55f6ec3336797123286abc7eb472/qutip_qip-0.4.1-py3-none-any.whl", hash = "sha256:562050f96c445d6862d83d56f5dc3064662ddaf1889825fc9e9ed8fb8d868ece", size = 140822, upload-time = "2025-04-07T17:26:01.159Z" },
 ]
 
 [[package]]

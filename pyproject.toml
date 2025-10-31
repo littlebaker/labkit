@@ -10,6 +10,7 @@ dependencies = [
     "pyvisa>=1.15.0",
     "qcodes>=0.53.0",
     "qutip>=5.2.1",
+    "qutip-qip>=0.4.1",
     "sympy>=1.14.0",
     "waveforms>=2.2.2",
 ]
